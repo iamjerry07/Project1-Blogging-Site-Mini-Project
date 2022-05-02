@@ -22,7 +22,7 @@ const createBlog = async function (req, res) {
         if (data.isPublished)
             data["publishedAt"] = new Date();
         const createdBlog = await blogModel.create(data)
-        res.status(201).send({ status: true, msg: createdBlog })
+        res.status(201).send({ status: true, data: createdBlog })
     }
     catch (error) {
         res.status(500).send({ status: false, msg: error.message })
@@ -61,7 +61,7 @@ const getBlog = async function (req, res) {
         if (getData.length === 0)
             return res.status(404).send({ status: false, msg: "Blogs not present" })
 
-        res.status(200).send({ status: true, msg: getData })
+        res.status(200).send({ status: true, data: getData })
     }
     catch (error) {
         res.status(500).send({ status: false, msg: error.message })
@@ -98,7 +98,7 @@ const updateData = async function (req, res) {
 
         let getData = await blogModel.findOneAndUpdate({ _id: id }, { $set: updateQuery, $push: addQuery }, { new: true, upsert: true })
 
-        res.status(200).send({ status: true, msg: getData })
+        res.status(200).send({ status: true, data: getData })
     }
     catch (error) {
         res.status(500).send({ status: false, msg: error.message })
@@ -115,7 +115,7 @@ const deleteBlog = async function (req, res) {
         if (findData.isDeleted)
             return res.status(400).send({ status: false, msg: "Blog is already deleted" })
         let deletedata = await blogModel.findOneAndUpdate({ _id: Blogid }, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true, upsert: true })
-        res.status(200).send({ status: true, msg: deletedata })
+        res.status(200).send({ status: true, data: deletedata })
     }
     catch (error) {
         res.status(500).send({ status: false, msg: error.message })
@@ -154,7 +154,7 @@ const deleteBlogByQuery = async function (req, res) {
             return res.status(404).send({ status: false, message: "Blog is either published/ deleted/ doesn't exist, or Author is unauthorized" })
  
         let deletedData = await blogModel.updateMany(obj, { $set: { isDeleted: true, deletedAt: new Date() } }, { upsert: true })
-        res.status(200).send({ status: true, msg: deletedData })
+        res.status(200).send({ status: true, data: deletedData })
     }
     catch (error) {
         res.status(500).send({ status: false, msg: error.message })

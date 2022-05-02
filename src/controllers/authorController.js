@@ -15,10 +15,10 @@ const createAuthor = async function (req, res) {
             return res.status(403).send({ status: false, msg: "Enter valid email id" })
 
         const authorCreated = await authorModel.create(data);
-        res.status(201).send({ status: true, msg: authorCreated })
+        res.status(201).send({ status: true, data: authorCreated })
     }
     catch (error) {
-        res.status(500).send({ status: false, msg: error.message })
+        res.status(500).send({ status: false, data: error.message })
     }
 }
 
@@ -50,7 +50,7 @@ const authorLogin = async function (req, res) {
         },
             "Project1"
         );
-        res.status(200).send({ status: true, msg: token })
+        res.status(200).send({ status: true, data: token })
     }
     catch (error) {
         res.status(500).send({ status: false, msg: error.message })
